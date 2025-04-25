@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greyline Network Forum - Community Diskussionen</title>
+    <style>
+        :root {
+            --primary-color: #121212;
+            --secondary-color: #1e1e1e;
+            --accent-color: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.3);
+            --accent-secondary: #ff4081;
+            --text-color: #ffffff;
+            --text-secondary: #b3b3b3;
+            --gradient-bg: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+            --error-color: #ff4d4d;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            color: var(--text-color);
+        }
+        
+        .logo h1 span {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-btn {
+            background: transparent;
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid var(--accent-color);
+            cursor: pointer;
+        }
+        
+        .user-btn:hover {
+            background: rgba(0, 242, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .cta-button {
+            background: linear-gradient(90deg, var(--accent-color), #2f7f93);
+            color: #000;
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+        
+        /* Main Content */
+        main {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        .forum-header {
+            background: var(--secondary-color);
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .forum-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/api/placeholder/1920/300') center/cover no-repeat;
+            opacity: 0.15;
+            z-index: 0;
+        }
+        
+        .glow-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0, 0, 0, 0) 70%);
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        .glow-circle-1 {
+            width: 400px;
+            height: 400px;
+            top: -200px;
+            right: -100px;
+        }
+        
+        .glow-circle-2 {
+            width: 300px;
+            height: 300px;
+            bottom: -150px;
+            left: 10%;
+        }
+        
+        .forum-title {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .forum-title h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .forum-title p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Forum Layout */
+        .forum-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+        
+        /* Categories Section */
+        .category-list {
+            margin-bottom: 3rem;
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-header h3 {
+            font-size: 1.8rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .category-header h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 70%;
+            background: var(--accent-color);
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .category-card {
+            background: var(--secondary-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .category-card-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 242, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+        }
+        
+        .category-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .category-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .thread-preview {
+            padding: 1rem 2rem;
+        }
+        
+        .thread-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .thread-item:last-child {
+            border-bottom: none;
+        }
+        
+        .thread-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+        }
+        
+        .thread-title a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .thread-title a:hover {
+            color: var(--accent-color);
+        }
+        
+        .thread-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .thread-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .category-footer {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: relative;
+        }
+        
+        .sidebar-section {
+            background: var(--secondary-color);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        
+        .sidebar-header h3 {
+            font-size: 1.3rem;
+            position: relative;
+            padding-left: 0.8rem;
+        }
+        
+        .sidebar-header h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 70%;
+            background: var(--accent-color);
+            border-radius: 2px;
+            box-shadow: 0 0 5px var(--accent-glow);
+        }
+        
+        .login-form,
+        .register-form {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-color);
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px var(--accent-glow);
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .toggle-form {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .toggle-form:hover {
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+        
+        .stats-list {
+            padding: 1rem 1.5rem;
+        }
+        
+        .stat-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+        }
+        
+        .stat-value {
+            font-weight: 600;
+        }
+        
+        .online-list {
+            padding: 1rem 1.5rem;
+        }
+        
+        .online-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .online-user:last-child {
+            border-bottom: none;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .user-status {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+        }
+        
+        /* Post Discussion Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: var(--secondary-color);
+            width: 90%;
+            max-width: 800px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--accent-color);
+            transform: scale(1.1);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .rich-editor {
+            margin-top: 1rem;
+        }
+        
+        .editor-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .editor-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            padding: 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .editor-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .editor-content {
+            min-height: 200px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            resize: vertical;
+            width: 100%;
+        }
+        
+        .editor-content:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px var(--accent-glow);
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .cancel-btn {
+            background: transparent;
+            color: var(--text-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid var(--text-secondary);
+            cursor: pointer;
+        }
+        
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .post-btn {
+            background: var(--accent-color);
+            color: #000;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .post-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 3rem 0;
+            gap: 0.5rem;
+        }
+        
+        .page-item {
+            list-style: none;
+        }
+        
+        .page-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            background: var(--secondary-color);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .page-link:hover,
+        .page-item.active .page-link {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            padding: 5rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-logo {
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-logo h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        
+        .footer-logo span {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .footer-text {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-column h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 5px var(--accent-glow);
+            padding-left: 5px;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+        
+        .social-icon:hover {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1100px) {
+            .forum-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+            
+            nav ul {
+                margin-top: 1.5rem;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .user-actions {
+                margin-top: 1rem;
+            }
+            
+            .category-card-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .thread-title {
+                flex-direction: column;
+            }
+            
+            .thread-meta {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            
+            .forum-title h2 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>Greyline <span>Forum</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Kategorien</a></li>
+                    <li><a href="#">Aktuelle Themen</a></li>
+                    <li><a href="#">Mitglieder</a></li>
+                    <li><a href="#">Hilfe</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <button class="user-btn" id="login-trigger">Anmelden</button>
+                <button class="cta-button" id="register-trigger">Registrieren</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="forum-header">
+            <div class="glow-circle glow-circle-1"></div>
+            <div class="container forum-title">
+                <h2>Greyline Network Community Forum</h2>
+                <p>Diskutiere über deine Lieblings-Server, teile deine Erfahrungen, finde Gleichgesinnte und bleibe über alle Updates und Events informiert.</p>
+            </div>
+        </section>
+
+        <div class="container forum-layout">
+            <div class="main-content">
+                <!-- Announcements Category -->
+                <div class="category-list">
+                    <div class="category-header">
+                        <h3>Ankündigungen</h3>
+                        <button class="cta-button" id="new-post-btn">Neues Thema</button>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-card-header">
+                            <div class="category-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                </svg>
+                            </div>
+                            <div class="category-info">
+                                <h4>Offizielle Ankündigungen</h4>
+                                <p>Wichtige Informationen vom Greyline Team zu Servern, Updates und Events.</p>
+                            </div>
+                        </div>
+                        <div class="thread-preview">
+                            <div class="thread-item">
+                                <div class="thread-title">
+                                    <a href="#">[WICHTIG] Serverupdate für alle Minecraft RP Server am 30.04.2025</a>
+                                    <span>Heute, 10:23</span>
+                                </div>
+                                <div class="thread-meta">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <a href="#">GreylineAdmin</a>
+                                </span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    45 Antworten
+                                </span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    2.3k Aufrufe
+                                </span>
+                            </div>
+                        </div>
+                        <div class="thread-item">
+                            <div class="thread-title">
+                                <a href="#">Neues Community-Event: Greyline Sommerfest 2025</a>
+                                <span>Gestern, 15:47</span>
+                            </div>
+                            <div class="thread-meta">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <a href="#">EventManager</a>
+                                </span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    34 Antworten
+                                </span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    1.8k Aufrufe
+                                </span>
+                            </div>
+                        </div>
+                        <div class="category-footer">
+                            <span>2 Themen</span>
+                            <span>Letzter Beitrag: Heute, 10:23</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minecraft Category -->
+                <div class="category-list">
+                    <div class="category-header">
+                        <h3>Minecraft Server</h3>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-card-header">
+                            <div class="category-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                </svg>
+                            </div>
+                            <div class="category-info">
+                                <h4>Greyline Roleplay</h4>
+                                <p>Diskussionen rund um unseren Minecraft Roleplay Server.</p>
+                            </div>
+                        </div>
+                        <div class="thread-preview">
+                            <div class="thread-item">
+                                <div class="thread-title">
+                                    <a href="#">Vorschlag für neue Rollenspiel-Regeln</a>
+                                    <span>Heute, 08:12</span>
+                                </div>
+                                <div class="thread-meta">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <a href="#">RpMaster99</a>
+                                    </span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                        </svg>
+                                        87 Antworten
+                                    </span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        750 Aufrufe
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="thread-item">
+                                <div class="thread-title">
+                                    <a href="#">Suche aktive RP-Gruppe für Handelsrouten</a>
+                                    <span>Gestern, 19:30</span>
+                                </div>
+                                <div class="thread-meta">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <a href="#">Trader_Leon</a>
+                                    </span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                        </svg>
+                                        12 Antworten
+                                    </span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        320 Aufrufe
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="category-footer">
+                            <span>145 Themen</span>
+                            <span>Letzter Beitrag: Heute, 08:12</span>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-card-header">
+                            <div class="category-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="category-info">
+                                <h4>Greyline Survival</h4>
+                                <p>Alles rund um unseren Survival Server mit besonderen Challenges.</p>
+                            </div>
+                        </div>
+                        <div class="thread-preview">
+                            <div class="thread-item">
+                                <div class="thread-title">
+                                    <a href="#">Meine Redstone-Kreation: Automatische Farmanlage</a>
+                                    <span>Vor 2 Tagen</span>
+                                </div>
+                                <div class="thread-meta">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <a href="#">RedstoneMaster42</a>
+                                    </span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                        </svg>
+                                        56 Antworten
+                                    </span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        890 Aufrufe
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="category-footer">
+                            <span>98 Themen</span>
+                            <span>Letzter Beitrag: Vor 2 Tagen</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Category -->
+                <div class="category-list">
+                    <div class="category-header">
+                        <h3>Community</h3>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-card-header">
+                            <div class="category-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <div class="category-info">
+                                <h4>Vorstellungen & Smalltalk</h4>
+                                <p>Stell dich vor und lerne andere Community-Mitglieder kennen.</p>
+                            </div>
+                        </div>
+                        <div class="thread-preview">
+                            <div class="thread-item">
+                                <div class="thread-title">
+                                    <a href="#">Neu hier! Grüße aus Hamburg</a>
+                                    <span>Heute, 14:22</span>
+                                </div>
+                                <div class="thread-meta">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <a href="#">HamburgerJung</a>
+                                    </span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                        </svg>
+                                        15 Antworten
+                                    </span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        178 Aufrufe
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="category-footer">
+                            <span>235 Themen</span>
+                            <span>Letzter Beitrag: Heute, 14:22</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar">
+                <!-- Login Section -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <h3>Anmelden</h3>
+                    </div>
+                    <div class="login-form">
+                        <div class="form-group">
+                            <label for="username">Benutzername</label>
+                            <input type="text" class="form-control" id="username" placeholder="Dein Benutzername">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Passwort</label>
+                            <input type="password" class="form-control" id="password" placeholder="Dein Passwort">
+                        </div>
+                        <div class="form-footer">
+                            <div class="form-check">
+                                <input type="checkbox" id="remember">
+                                <label for="remember">Angemeldet bleiben</label>
+                            </div>
+                            <button class="cta-button">Anmelden</button>
+                        </div>
+                        <a href="#" class="toggle-form">Passwort vergessen?</a>
+                    </div>
+                </div>
+
+                <!-- Forum Stats -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <h3>Statistiken</h3>
+                    </div>
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">Themen:</span>
+                            <span class="stat-value">1,458</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Beiträge:</span>
+                            <span class="stat-value">24,789</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Mitglieder:</span>
+                            <span class="stat-value">5,234</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Neuestes Mitglied:</span>
+                            <span class="stat-value">HamburgerJung</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Online Users -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <h3>Online (24)</h3>
+                    </div>
+                    <div class="online-list">
+                        <div class="online-user">
+                            <div class="user-avatar">
+                                <img src="/api/placeholder/40/40" alt="User Avatar">
+                            </div>
+                            <div class="user-info">
+                                <h4>RpMaster99</h4>
+                                <div class="user-status">
+                                    <span class="status-indicator"></span>
+                                    Online
+                                </div>
+                            </div>
+                        </div>
+                        <div class="online-user">
+                            <div class="user-avatar">
+                                <img src="/api/placeholder/40/40" alt="User Avatar">
+                            </div>
+                            <div class="user-info">
+                                <h4>EventManager</h4>
+                                <div class="user-status">
+                                    <span class="status-indicator"></span>
+                                    Online
+                                </div>
+                            </div>
+                        </div>
+                        <div class="online-user">
+                            <div class="user-avatar">
+                                <img src="/api/placeholder/40/40" alt="User Avatar">
+                            </div>
+                            <div class="user-info">
+                                <h4>HamburgerJung</h4>
+                                <div class="user-status">
+                                    <span class="status-indicator"></span>
+                                    Online
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <h3>Greyline <span>Network</span></h3>
+                </div>
+                <p class="footer-text">Das Greyline Network ist eine wachsende deutschsprachige Gaming-Community mit Servern für verschiedene Spiele und einem Fokus auf Roleplay und Zusammenhalt.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84 0 0 0 .497-3.753C20.18 7.773 21.692 5.25 22 4.009z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Forum</a></li>
+                    <li><a href="#">Minecraft Server</a></li>
+                    <li><a href="#">Team bewerben</a></li>
+                    <li><a href="#">Discord beitreten</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Rechtliches</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Impressum</a></li>
+                    <li><a href="#">Datenschutz</a></li>
+                    <li><a href="#">AGB</a></li>
+                    <li><a href="#">Cookie-Einstellungen</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Kontakt</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Kontaktformular</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">E-Mail</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container copyright">
+            <p>&copy; 2025 Greyline Network. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <!-- New Post Modal -->
+    <div class="modal" id="post-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Neues Thema erstellen</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="post-title">Titel</label>
+                    <input type="text" class="form-control" id="post-title" placeholder="Titel deines Themas">
+                </div>
+                <div class="form-group">
+                    <label for="post-category">Kategorie</label>
+                    <select class="form-control" id="post-category">
+                        <option>Ankündigungen</option>
+                        <option>Greyline Roleplay</option>
+                        <option>Greyline Survival</option>
+                        <option>Vorstellungen & Smalltalk</option>
+                    </select>
+                </div>
+                <div class="rich-editor">
+                    <div class="editor-toolbar">
+                        <button class="editor-btn">B</button>
+                        <button class="editor-btn">I</button>
+                        <button class="editor-btn">U</button>
+                        <button class="editor-btn">Link</button>
+                        <button class="editor-btn">Image</button>
+                        <button class="editor-btn">Code</button>
+                        <button class="editor-btn">Quote</button>
+                        <button class="editor-btn">List</button>
+                    </div>
+                    <textarea class="editor-content" placeholder="Schreibe dein Thema hier..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-btn" id="cancel-post">Abbrechen</button>
+                <button class="post-btn">Veröffentlichen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show modal
+        document.getElementById('new-post-btn').addEventListener('click', function() {// Show modal
+        document.getElementById('new-post-btn').addEventListener('click', function() {
+            document.getElementById('post-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        });
+        
+        // Close modal
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('post-modal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Enable scrolling
+        });
+        
+        document.getElementById('cancel-post').addEventListener('click', function() {
+            document.getElementById('post-modal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Enable scrolling
+        });
+        
+        // Close modal if clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target == document.getElementById('post-modal')) {
+                document.getElementById('post-modal').style.display = 'none';
+                document.body.style.overflow = 'auto'; // Enable scrolling
+            }
+        });
+        
+        // Login and Register form toggle functionality
+        document.getElementById('login-trigger').addEventListener('click', function() {
+            // Scroll to login form in sidebar
+            const loginForm = document.querySelector('.login-form');
+            loginForm.scrollIntoView({ behavior: 'smooth' });
+            
+            // Add highlight effect
+            loginForm.classList.add('highlight-form');
+            setTimeout(function() {
+                loginForm.classList.remove('highlight-form');
+            }, 1500);
+        });
+        
+        document.getElementById('register-trigger').addEventListener('click', function() {
+            // Create registration modal if it doesn't exist
+            if (!document.getElementById('register-modal')) {
+                const registerModal = document.createElement('div');
+                registerModal.className = 'modal';
+                registerModal.id = 'register-modal';
+                
+                registerModal.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Registrieren</h3>
+                            <button class="close-modal" id="close-register-modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="register-username">Benutzername</label>
+                                <input type="text" class="form-control" id="register-username" placeholder="Wähle einen Benutzernamen">
+                            </div>
+                            <div class="form-group">
+                                <label for="register-email">E-Mail</label>
+                                <input type="email" class="form-control" id="register-email" placeholder="Deine E-Mail-Adresse">
+                            </div>
+                            <div class="form-group">
+                                <label for="register-password">Passwort</label>
+                                <input type="password" class="form-control" id="register-password" placeholder="Wähle ein sicheres Passwort">
+                            </div>
+                            <div class="form-group">
+                                <label for="register-password-confirm">Passwort bestätigen</label>
+                                <input type="password" class="form-control" id="register-password-confirm" placeholder="Passwort erneut eingeben">
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="terms">
+                                <label for="terms">Ich akzeptiere die <a href="#" class="toggle-form">Nutzungsbedingungen</a> und <a href="#" class="toggle-form">Datenschutzrichtlinien</a>.</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="cancel-btn" id="cancel-register">Abbrechen</button>
+                            <button class="post-btn">Registrieren</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(registerModal);
+                
+                // Add close functionality for register modal
+                document.getElementById('close-register-modal').addEventListener('click', function() {
+                    document.getElementById('register-modal').style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+                
+                document.getElementById('cancel-register').addEventListener('click', function() {
+                    document.getElementById('register-modal').style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+                
+                // Close register modal if clicking outside
+                window.addEventListener('click', function(event) {
+                    if (event.target == document.getElementById('register-modal')) {
+                        document.getElementById('register-modal').style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+            
+            // Show register modal
+            document.getElementById('register-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // Add CSS for form highlight effect
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes highlightForm {
+                0% { background: rgba(0, 242, 255, 0.1); }
+                50% { background: rgba(0, 242, 255, 0.3); }
+                100% { background: rgba(0, 242, 255, 0.1); }
+            }
+            
+            .highlight-form {
+                animation: highlightForm 1.5s;
+            }
+            
+            .status-indicator {
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background-color: var(--success-color);
+                margin-right: 5px;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Dynamic category header effect
+        const categoryHeaders = document.querySelectorAll('.category-header h3');
+        
+        categoryHeaders.forEach(header => {
+            header.addEventListener('mouseover', function() {
+                this.style.color = 'var(--accent-color)';
+                this.style.textShadow = '0 0 10px var(--accent-glow)';
+            });
+            
+            header.addEventListener('mouseout', function() {
+                this.style.color = 'var(--text-color)';
+                this.style.textShadow = 'none';
+            });
+        });
+        
+        // Add active state to navigation
+        const navLinks = document.querySelectorAll('nav ul li a');
+        
+        // Set the first link (Home) as active by default
+        navLinks[0].classList.add('active');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Remove active class from all links
+                navLinks.forEach(item => item.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+            });
+        });
+        
+        // Add style for active nav link
+        const navStyle = document.createElement('style');
+        navStyle.textContent = `
+            nav ul li a.active {
+                color: var(--accent-color);
+                text-shadow: 0 0 5px var(--accent-glow);
+            }
+            
+            nav ul li a.active::after {
+                width: 100%;
+            }
+        `;
+        document.head.appendChild(navStyle);
+        
+        // Simulate loading new threads
+        function simulateLoading() {
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'loading-indicator';
+            loadingIndicator.innerHTML = `
+                <div class="spinner"></div>
+                <p>Lade neue Beiträge...</p>
+            `;
+            
+            const mainContent = document.querySelector('.main-content');
+            mainContent.appendChild(loadingIndicator);
+            
+            // Add loading indicator styles
+            const loadingStyle = document.createElement('style');
+            loadingStyle.textContent = `
+                .loading-indicator {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin: 2rem 0;
+                    padding: 1rem;
+                    background: var(--secondary-color);
+                    border-radius: 10px;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                }
+                
+                .spinner {
+                    width: 40px;
+                    height: 40px;
+                    border: 4px solid rgba(255, 255, 255, 0.1);
+                    border-radius: 50%;
+                    border-top-color: var(--accent-color);
+                    animation: spin 1s linear infinite;
+                    margin-bottom: 1rem;
+                }
+                
+                @keyframes spin {
+                    to { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(loadingStyle);
+            
+            // Remove loading indicator after 2 seconds
+            setTimeout(function() {
+                loadingIndicator.remove();
+            }, 2000);
+        }
+        
+        // Add event listener to pagination
+        const paginationLinks = document.querySelectorAll('.pagination .page-link');
+        
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all pagination items
+                document.querySelectorAll('.pagination .page-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Add active class to parent li
+                this.parentElement.classList.add('active');
+                
+                // Simulate loading
+                simulateLoading();
+                
+                // Scroll to top of main content
+                document.querySelector('.main-content').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+        
+        // Add rich text editor functionality
+        const editorButtons = document.querySelectorAll('.editor-btn');
+        const editorContent = document.querySelector('.editor-content');
+        
+        editorButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const buttonText = this.textContent;
+                let selectedText = window.getSelection().toString();
+                let textToInsert = '';
+                
+                switch (buttonText) {
+                    case 'B':
+                        textToInsert = `**${selectedText || 'Fettgedruckter Text'}**`;
+                        break;
+                    case 'I':
+                        textToInsert = `*${selectedText || 'Kursiver Text'}*`;
+                        break;
+                    case 'U':
+                        textToInsert = `__${selectedText || 'Unterstrichener Text'}__`;
+                        break;
+                    case 'Link':
+                        textToInsert = `[${selectedText || 'Link Text'}](https://beispiel.de)`;
+                        break;
+                    case 'Image':
+                        textToInsert = `![${selectedText || 'Bildbeschreibung'}](https://beispiel.de/bild.jpg)`;
+                        break;
+                    case 'Code':
+                        textToInsert = `\`\`\`\n${selectedText || 'Code hier einfügen'}\n\`\`\``;
+                        break;
+                    case 'Quote':
+                        textToInsert = `> ${selectedText || 'Zitattext hier'}`;
+                        break;
+                    case 'List':
+                        textToInsert = `\n- ${selectedText || 'Listenelement 1'}\n- Listenelement 2\n- Listenelement 3`;
+                        break;
+                }
+                
+                // Insert at cursor position
+                if (editorContent.selectionStart || editorContent.selectionStart === 0) {
+                    const startPos = editorContent.selectionStart;
+                    const endPos = editorContent.selectionEnd;
+                    
+                    editorContent.value = editorContent.value.substring(0, startPos) + textToInsert + editorContent.value.substring(endPos);
+                    
+                    // Set cursor position after inserted text
+                    editorContent.selectionStart = startPos + textToInsert.length;
+                    editorContent.selectionEnd = startPos + textToInsert.length;
+                } else {
+                    editorContent.value += textToInsert;
+                }
+                
+                // Focus back on the textarea
+                editorContent.focus();
+            });
+        });
+        
+        // Add category hover effect
+        const categoryCards = document.querySelectorAll('.category-card');
+        
+        categoryCards.forEach(card => {
+            card.addEventListener('mouseover', function() {
+                this.style.borderColor = 'var(--accent-color)';
+                this.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3), 0 0 5px var(--accent-glow)';
+            });
+            
+            card.addEventListener('mouseout', function() {
+                this.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.2)';
+            });
+        });
+        
+        // Notify user about cookies
+        setTimeout(function() {
+            const cookieNotice = document.createElement('div');
+            cookieNotice.className = 'cookie-notice';
+            cookieNotice.innerHTML = `
+                <div class="cookie-content">
+                    <p>Wir verwenden Cookies, um deine Erfahrung zu verbessern. Durch die weitere Nutzung dieser Website stimmst du der Verwendung von Cookies zu.</p>
+                    <div class="cookie-buttons">
+                        <button class="cookie-btn accept">Akzeptieren</button>
+                        <button class="cookie-btn settings">Einstellungen</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(cookieNotice);
+            
+            // Add cookie notice styles
+            const cookieStyle = document.createElement('style');
+            cookieStyle.textContent = `
+                .cookie-notice {
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    background: var(--secondary-color);
+                    padding: 1rem;
+                    z-index: 1000;
+                    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+                    animation: slideUp 0.5s;
+                }
+                
+                @keyframes slideUp {
+                    from { transform: translateY(100%); }
+                    to { transform: translateY(0); }
+                }
+                
+                .cookie-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    max-width: 1400px;
+                    margin: 0 auto;
+                }
+                
+                .cookie-buttons {
+                    display: flex;
+                    gap: 1rem;
+                }
+                
+                .cookie-btn {
+                    padding: 0.5rem 1rem;
+                    border-radius: 5px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                }
+                
+                .cookie-btn.accept {
+                    background: var(--accent-color);
+                    color: #000;
+                    border: none;
+                    box-shadow: 0 0 10px var(--accent-glow);
+                }
+                
+                .cookie-btn.settings {
+                    background: transparent;
+                    color: var(--text-color);
+                    border: 1px solid var(--text-secondary);
+                }
+                
+                .cookie-btn:hover {
+                    transform: translateY(-3px);
+                }
+                
+                @media (max-width: 768px) {
+                    .cookie-content {
+                        flex-direction: column;
+                        gap: 1rem;
+                    }
+                }
+            `;
+            document.head.appendChild(cookieStyle);
+            
+            // Add cookie notice functionality
+            document.querySelector('.cookie-btn.accept').addEventListener('click', function() {
+                cookieNotice.style.animation = 'slideDown 0.5s forwards';
+                
+                const slideDownStyle = document.createElement('style');
+                slideDownStyle.textContent = `
+                    @keyframes slideDown {
+                        from { transform: translateY(0); }
+                        to { transform: translateY(100%); }
+                    }
+                `;
+                document.head.appendChild(slideDownStyle);
+                
+                setTimeout(function() {
+                    cookieNotice.remove();
+                }, 500);
+                
+                // Store cookie preference
+                localStorage.setItem('cookieConsent', 'accepted');
+            });
+            
+            document.querySelector('.cookie-btn.settings').addEventListener('click', function() {
+                // Open cookie settings (simplified for this example)
+                alert('Cookie-Einstellungen würden hier in einem echten Forum angezeigt werden.');
+            });
+            
+            // Check if user already accepted cookies
+            if (localStorage.getItem('cookieConsent') === 'accepted') {
+                cookieNotice.remove();
+            }
+        }, 3000); // Show after 3 seconds
+    </script>
+</body>
+</html>
